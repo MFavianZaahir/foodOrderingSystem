@@ -11,7 +11,7 @@ module.exports = {
       },
       order_id: {
         type: Sequelize.INTEGER,
-        allowNull:false,
+        allowNull:false,  
         references:{
           model:'order_lists',
           key:'id'

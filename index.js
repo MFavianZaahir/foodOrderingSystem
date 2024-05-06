@@ -1,21 +1,53 @@
+// const express = require('express');
+// const loginController = require('./controllers/loginController');
+// const registerController = require('./controllers/register_controller');
+
+// const app = express();
+// const port = 3000;
+
+// // ... middleware
+
+// // Login route
+// app.post('/login', loginController.login);
+
+// // Registration route
+// app.post('/register', registerController.register);
+
+// app.listen(port, () => {
+//   console.log(`Server listening on port ${port}`);
+// });
+
 const express = require("express");
 const app = express();
 const PORT = 8000;
 const bodyParser = require("body-parser");
+const multer = require("multer");
 const cors = require("cors");
-const adminRoute = require("./routes/admin_route");
-// const kamarRoute = require("./routes/kamar.route");
-// const pemesananRoute = require("./routes/pemesanan.route");
-// const detail_pemesananRoute = require("./routes/detail_pemesanan.route");
+
+const userRoute = require("./routes/user.route");
+const foodRoute = require("./routes/food.route");
+const foodController = require("./controllers/food.controller");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
-app.use("/admin", adminRoute);
-// app.use("/kamar", kamarRoute);
-// app.use("/pemesanan", pemesananRoute);
-// app.use("/detai_pemesanan", detail_pemesananRoute);
+app.use("/user", userRoute);
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/"); // Change 'uploads/' to your desired folder
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+const upload = multer({ storage });
+
+app.use(upload.single("image")); // Adjust field name if needed
+
+// Register the router for the `/food` resource
+app.use("/food", foodRoute);
 
 app.listen(PORT, () => {
-  console.log("run on port 8000");
+  console.log("Food ranned on port ${PORT}");
 });
