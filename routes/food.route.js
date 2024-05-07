@@ -1,15 +1,3 @@
-// const express = require('express');
-
-// const foodController = require('../controllers/food.controller'); // Include the controller
-
-// const router = express.Router();
-
-// // PUT /food/:id
-// router.put('/:id', foodController.updateFood);
-// app.post('/food', authVerify, foodController.addFood);
-
-// module.exports = router;
-
 const express = require('express');
 
 const foodController = require('../controllers/food.controller'); // Include the controller
@@ -18,8 +6,9 @@ const auth = require('../auth/auth'); // Include your auth middleware
 const router = express.Router();
 
 router.post('/', auth.authVerify, foodController.addFood);
-router.put('/:id', foodController.updateFood);
+router.put('/:id', auth.authVerify, foodController.updateFood);
 router.get('/', foodController.getAllFoods);
+router.delete('/:id', auth.authVerify, foodController.deleteFood);
 
 // POST /food (with auth middleware)
 

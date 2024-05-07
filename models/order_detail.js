@@ -11,10 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsTo(models.order_list,{
-        foreignKey:"id", as:"listDetail"
+        foreignKey:"id"
       });
       this.belongsTo(models.food,{
-        foreignKey:"id", as:"foodDetail"
+        foreignKey:"id"
       });
     }
   }

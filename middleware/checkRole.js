@@ -1,7 +1,7 @@
 const checkRole = (allowedRoles) => {
       return(req,res,next) => {
-          const userRole = req.userData.role;
-          if (allowedRoles.includes(userRole)){
+          const adminRole = req.adminData.role;
+          if (allowedRoles.includes(adminRole)){
               next();
           }   else {
               return res.status(403).json({
