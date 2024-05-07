@@ -29,51 +29,50 @@ exports.getAllorder = async (_, response) => {
 
 
 exports.addOrder = async (req, res) => {
-      try {
-        const { customer_name, table_number, order_date, order_detail } = req.body;
-    
-        // Create the order list
-        const createdOrder = await orderModel.create({
-          customer_name,
-          table_number,
-          order_date,
-        });
-    
-        const orderId = createdOrder.id;
-        let total = 0;
-    
-        // Prepare order details with the correct orderId
-        const preparedOrderDetails = order_detail.map(detail => ({
-          ...detail,
-          order_id: orderId
-        }));
-    
-        // Calculate total price and adjust order details accordingly
-        const updatedDetail = await Promise.all(preparedOrderDetails.map(async (detail) => {
-          const { food_id, quantity } = detail;
-          const food = await foodModel.findByPk(food_id);
-          if (!food) {
-            throw new Error(`Food with ID ${food_id} not found`);
-          }
-          total += food.price * quantity;
-          return { ...detail, price: food.price, total: food.price * quantity };
-        }));
-    
-        // Create order details
-        await detailModel.bulkCreate(updatedDetail);
-    
-        // Update order's total price
-        await orderModel.update({ price: total }, { where: { id: orderId } });
-    
-        return res.status(201).json({
-          status: true,
-          data: createdOrder,
-          message: "Order list has been created",
-        });
-      } catch (error) {
-        return res.status(500).json({
-          status: false,
-          message: error.message,
-        });
+  try {
+    const { customer_name, table_number, order_date, order_detail } = req.body;
+
+    // Create the order list
+    const createdOrder = await orderModel.create({
+      customer_name,
+      table_number,
+      order_date,
+    });
+
+    const orderId = createdOrder.id;
+    let total = 0;
+
+    // Prepare order details with the correct orderId and calculate total price
+    const updatedDetail = await Promise.all(order_detail.map(async (detail) => {
+      const { food_id, quantity } = detail;
+      const food = await foodModel.findByPk(food_id);
+      if (!food) {
+        throw new Error(`Food with ID ${food_id} not found`);
       }
-    };
+      const price = food.price * quantity; // Calculate price for each item
+      total += price; // Add price to total
+      return { ...detail, order_id: orderId, price }; // Include price in detail
+    }));
+
+    // Create order details
+    await detailModel.bulkCreate(updatedDetail);
+
+    // Update order's total price
+    await orderModel.update({ price: total }, { where: { id: orderId } });
+
+    return res.status(201).json({
+      status: true,
+      data: createdOrder,
+      total_price: total, // Include total price in the response
+      message: "Order list has been created",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: false,
+      message: error.message,
+    });
+  }
+};
+
+
+    

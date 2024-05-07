@@ -3,36 +3,6 @@ const multer = require("multer"); // For file upload
 
 const upload = multer({ dest: "uploads/" }); // Adjust storage destination as needed
 
-// exports.addFood = async (request, response) => {
-//   try {
-//     // Extract data from request body
-//     const { name, spicy_level, price, image } = request.body;
-//     // Create a new food object
-//     const newFood = {
-//       name,
-//       spicy_level,
-//       price,
-//       image,
-//     };
-
-//     // Create food in the database
-//     const createdFood = await models.create(newFood);
-
-//     // Respond with success message and created food data
-//     return response.json({
-//       success: true,
-//       data: createdFood,
-//       message: "Food added successfully",
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     return response.status(500).json({
-//       success: false,
-//       message: "Internal server error",
-//     });
-//   }
-// };
-
 exports.addFood = async (request, response) => {
   // Extract data from request body
   const { name, spicy_level, price, image } = request.body;
