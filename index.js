@@ -26,7 +26,6 @@ const cors = require("cors");
 
 const userRoute = require("./routes/user.route");
 const foodRoute = require("./routes/food.route");
-const foodController = require("./controllers/food.controller");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -49,5 +48,5 @@ app.use(upload.single("image")); // Adjust field name if needed
 app.use("/food", foodRoute);
 
 app.listen(PORT, () => {
-  console.log("Food ranned on port ${PORT}");
+  console.log("Food ranned on port 8000");
 });

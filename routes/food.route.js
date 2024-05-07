@@ -13,14 +13,14 @@
 const express = require('express');
 
 const foodController = require('../controllers/food.controller'); // Include the controller
-const authVerify = require('../auth/auth'); // Include your auth middleware
+const auth = require('../auth/auth'); // Include your auth middleware
 
 const router = express.Router();
 
-// PUT /food/:id
+router.post('/', auth.authVerify, foodController.addFood);
 router.put('/:id', foodController.updateFood);
+router.get('/', foodController.getAllFoods);
 
 // POST /food (with auth middleware)
-router.post('/food', authVerify, foodController.addFood);
 
 module.exports = router;

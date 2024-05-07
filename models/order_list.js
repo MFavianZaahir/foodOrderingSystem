@@ -10,12 +10,18 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.hasMany(models.order_list, {
-        foreignKey: 'id', as: 'order_detail'
+      this.hasMany(models.order_detail, {
+        foreignKey: 'id', as: 'detailList'
       })
     }
   }
   order_list.init({
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER
+    },
     customer_name: DataTypes.STRING,
     table_number: DataTypes.INTEGER,
     order_date: DataTypes.DATE

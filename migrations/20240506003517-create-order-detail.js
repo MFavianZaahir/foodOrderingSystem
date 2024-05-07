@@ -11,19 +11,9 @@ module.exports = {
       },
       order_id: {
         type: Sequelize.INTEGER,
-        allowNull:false,  
-        references:{
-          model:'order_lists',
-          key:'id'
-        }
       },
       food_id: {
         type: Sequelize.INTEGER,
-        allowNull:false,
-        references:{
-          model:'foods',
-          key:'id'
-        }
       },
       quantity: {
         type: Sequelize.BIGINT

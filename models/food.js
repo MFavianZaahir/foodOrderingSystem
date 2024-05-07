@@ -11,11 +11,17 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.hasMany(models.order_detail, {
-        foreignKey: 'food_id', as: 'order_detail'
+        foreignKey: 'id', as: 'detailFood'
       })
     }
   }
   food.init({
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER
+    },
     name: DataTypes.STRING,
     spicy_level: DataTypes.ENUM('spicy','hot'),
     price: DataTypes.DOUBLE,
